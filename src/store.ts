@@ -38,5 +38,9 @@ export const useTaskStore = create((set) => ({
   getTasks: async () => {
     const tasks = await getTasks();
     set({ tasks: tasks })
+  },
+  deleteTask: async (id: string) => {
+    const tasks = await deleteTask(id)
+    set({ tasks: tasks })
   }
 }))

@@ -10,6 +10,7 @@ import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { useEffect } from "react";
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
+import Dialog from "./Dialog";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -51,9 +52,11 @@ export default function List() {
                         <Box>
                           <Flex gap="2" direction="row-reverse" justify="between">
                             <Flex gap="2">
-                              <IconButton color="crimson" variant="soft" size="1">
-                                <TrashIcon width="18" height="18" />
-                              </IconButton>
+                              <Dialog id={id} title={title}>
+                                <IconButton color="crimson" variant="soft" size="1">
+                                  <TrashIcon width="18" height="18" />
+                                </IconButton>
+                              </Dialog>
                               <IconButton color="cyan" variant="soft" size="1" >
                                 <CheckIcon width="18" height="18" />
                               </IconButton>
