@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -7,11 +6,13 @@ import {
   DroppableProvided
 } from "react-beautiful-dnd";
 import { Box, Card, Checkbox, Flex, Text } from '@radix-ui/themes';
-import { getTasks } from "../store";
+import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
+import { useEffect } from "react";
 
 export default function List() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const taskStore: any = useTaskStore()
+  const tasks: Task[] = taskStore.tasks;
 
   const handleOnDragEnd = (result: DropResult) => {
     if (!result || !result.destination) return;
@@ -19,14 +20,11 @@ export default function List() {
     const items = [...tasks];
     const [draggedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, draggedItem);
-
-    setTasks(items);
   };
 
   useEffect(() => {
-    getTasks().then(result => {
-      setTasks(result as Task[])
-    })
+    async function fetch() { await taskStore.getTasks() };
+    fetch();
   }, [])
 
   return (

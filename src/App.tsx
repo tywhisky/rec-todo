@@ -2,17 +2,18 @@ import { TextField } from "@radix-ui/themes";
 import List from "./components/List";
 import { PlusIcon } from '@radix-ui/react-icons'
 import { useState } from "react";
-import { getTasks, addTask } from "./store";
+import { useTaskStore } from "./store";
 import { NewTask } from "./types/Task";
 
 function App() {
   const [inputValue, setInputValue] = useState('');
+  const taskStore: any = useTaskStore();
 
   const handleKeyEnter = (event: { key: string; }) => {
     if (event.key === 'Enter') {
       const new_task = new NewTask({ title: inputValue })
-      addTask(new_task)
-      console.log('Enter key pressed');
+      taskStore.addTask(new_task)
+      setInputValue("")
     }
   };
 

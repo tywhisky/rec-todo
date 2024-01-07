@@ -1,5 +1,6 @@
 import { Store } from "tauri-plugin-store-api";
 import { Task, NewTask } from "./types/Task";
+import { create } from 'zustand'
 
 const store = new Store(".tasks.dat");
 
@@ -27,3 +28,15 @@ export const deleteTask = async (id: string) => {
     return tasks;
   }
 }
+
+export const useTaskStore = create((set) => ({
+  tasks: [],
+  addTask: async (task: NewTask) => {
+    const tasks = await addTask(task)
+    set({ tasks: tasks })
+  },
+  getTasks: async () => {
+    const tasks = await getTasks();
+    set({ tasks: tasks })
+  }
+}))
