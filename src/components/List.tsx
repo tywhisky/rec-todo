@@ -5,10 +5,11 @@ import {
   DropResult,
   DroppableProvided
 } from "react-beautiful-dnd";
-import { Box, Card, Checkbox, Flex, Text } from '@radix-ui/themes';
+import { Box, Card, Checkbox, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { useEffect } from "react";
+import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -49,7 +50,14 @@ export default function List() {
                         size="1">
                         <Box>
                           <Flex gap="2" direction="row-reverse" justify="between">
-                            <Checkbox defaultChecked />
+                            <Flex gap="2">
+                              <IconButton color="crimson" variant="soft" size="1">
+                                <TrashIcon width="18" height="18" />
+                              </IconButton>
+                              <IconButton color="cyan" variant="soft" size="1" >
+                                <CheckIcon width="18" height="18" />
+                              </IconButton>
+                            </Flex>
                             <Box className={completed && "line-through text-gray-500" || ""}>
                               <Text as="div" size="2" weight="bold">
                                 {title}
