@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -7,40 +7,27 @@ import {
   DroppableProvided
 } from "react-beautiful-dnd";
 import { Box, Card, Checkbox, Flex, Text } from '@radix-ui/themes';
-
-const tableDataRaw = [
-  {
-    id: "temp-above",
-    title: "Temperature - Above Canopy",
-    description: "Task1 description",
-    completed: false,
-  },
-  {
-    id: "temp-in",
-    title: "Temperature - In Canopy",
-    description: "Task2 description",
-    completed: false,
-  },
-  {
-    id: "temp-below",
-    title: "Temperature - Below Canopy",
-    description: "Task3 description",
-    completed: true,
-  },
-];
+import { getTasks } from "../store";
+import { Task } from "../types/Task";
 
 export default function List() {
-  const [tableData, setTableData] = useState(tableDataRaw);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleOnDragEnd = (result: DropResult) => {
     if (!result || !result.destination) return;
 
-    const items = [...tableData];
+    const items = [...tasks];
     const [draggedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, draggedItem);
 
-    setTableData(items);
+    setTasks(items);
   };
+
+  useEffect(() => {
+    getTasks().then(result => {
+      setTasks(result as Task[])
+    })
+  }, [])
 
   return (
     <div>
@@ -52,7 +39,7 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tableData.map(({ id, title, description, completed }, index) => {
+              {tasks.map(({ id, title, description, completed }, index) => {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
