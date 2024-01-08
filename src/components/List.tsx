@@ -5,7 +5,7 @@ import {
   DropResult,
   DroppableProvided
 } from "react-beautiful-dnd";
-import { Box, Card, Checkbox, Flex, IconButton, Text } from '@radix-ui/themes';
+import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { useEffect } from "react";
