@@ -18,7 +18,6 @@ export default function List() {
   const tasks: Task[] = taskStore.tasks;
 
   const handleOnDragEnd = (result: DropResult) => {
-    console.log(result)
     if (!result || !result.destination) return;
     taskStore.reorderTasks(result.source.index, result.destination.index)
   };
