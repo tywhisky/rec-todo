@@ -1,5 +1,5 @@
 import { Store } from "tauri-plugin-store-api";
-import { Task, NewTask } from "./types/Task";
+import { Task, NewTask, UpdateTaskInput } from "./types/Task";
 import { create } from 'zustand'
 
 const store = new Store(".tasks.dat");
@@ -29,6 +29,20 @@ export const deleteTask = async (id: string) => {
   }
 }
 
+export const updateTask = async (id: string, task: UpdateTaskInput) => {
+  const tasks = await getTasks() as Task[];
+  const taskIndex = tasks.findIndex(t => t.id === id)
+  if (taskIndex !== -1) {
+    const newTask = { ...tasks[taskIndex], ...task }
+    const newTasks = [...tasks.slice(0, taskIndex), newTask, ...tasks.slice(taskIndex + 1)];
+    await store.set("tasks", newTasks);
+    return newTasks;
+  } else {
+    console.error(`Task with ID ${id} not found.`);
+    return tasks;
+  }
+}
+
 export const useTaskStore = create((set) => ({
   tasks: [],
   addTask: async (task: NewTask) => {
@@ -41,6 +55,10 @@ export const useTaskStore = create((set) => ({
   },
   deleteTask: async (id: string) => {
     const tasks = await deleteTask(id)
+    set({ tasks: tasks })
+  },
+  completeTask: async (id: string) => {
+    const tasks = await updateTask(id, { completed: true })
     set({ tasks: tasks })
   }
 }))

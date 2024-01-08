@@ -25,6 +25,10 @@ export default function List() {
     items.splice(result.destination.index, 0, draggedItem);
   };
 
+  const onComplete = (id: string) => {
+    taskStore.completeTask(id)
+  }
+
   useEffect(() => {
     async function fetch() { await taskStore.getTasks() };
     fetch();
@@ -41,7 +45,7 @@ export default function List() {
               ref={provided.innerRef}
             >
               {tasks.map(({ id, title, description, completed }, index) => {
-                return (
+                return !completed && (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
                       <Card asChild
@@ -58,7 +62,7 @@ export default function List() {
                                   <TrashIcon width="18" height="18" />
                                 </IconButton>
                               </Dialog>
-                              <IconButton color="cyan" variant="soft" size="1" >
+                              <IconButton onClick={() => onComplete(id)} color="cyan" variant="soft" size="1" >
                                 <CheckIcon width="18" height="18" />
                               </IconButton>
                             </Flex>
@@ -86,7 +90,7 @@ export default function List() {
       </DragDropContext >
       <Collapse>
         {tasks.map(({ id, title, description, completed }, index) => {
-          return (
+          return completed && (
             <Card
               asChild
               className="mb-2"

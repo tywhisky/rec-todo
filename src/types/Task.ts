@@ -17,6 +17,16 @@ interface NewTaskInput {
   deadline?: Date;
 }
 
+export interface UpdateTaskInput {
+  pos?: number;
+  title?: string;
+  description?: string;
+  completed?: boolean;
+  deadline?: Date;
+  inserted_at?: Date;
+  updated_at?: Date;
+}
+
 export class NewTask implements Task {
   id: string;
   pos?: number;
