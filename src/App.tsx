@@ -27,6 +27,7 @@ function App() {
             <PlusIcon height="16" width="16" />
           </TextField.Slot>
           <TextField.Input
+            color="violet"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyEnter}
