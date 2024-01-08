@@ -8,7 +8,7 @@ import {
 import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import Dialog from "./Dialog";
 import Collapse from "./Collapse";
@@ -18,11 +18,8 @@ export default function List() {
   const tasks: Task[] = taskStore.tasks;
 
   const handleOnDragEnd = (result: DropResult) => {
+    console.log(result)
     if (!result || !result.destination) return;
-
-    const items = [...tasks];
-    const [draggedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, draggedItem);
   };
 
   const onComplete = (id: string) => {
@@ -97,6 +94,7 @@ export default function List() {
           return (
             <Card
               asChild
+              key={id}
               className="mb-2"
               size="1">
               <Box>
