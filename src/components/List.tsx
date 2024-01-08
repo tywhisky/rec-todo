@@ -20,6 +20,7 @@ export default function List() {
   const handleOnDragEnd = (result: DropResult) => {
     console.log(result)
     if (!result || !result.destination) return;
+    taskStore.reorderTasks(result.source.index, result.destination.index)
   };
 
   const onComplete = (id: string) => {

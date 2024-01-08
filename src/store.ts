@@ -4,19 +4,19 @@ import { create } from 'zustand'
 
 const store = new Store(".tasks.dat");
 
-export const getTasks = async () => {
+const getTasks = async () => {
   const tasks = await store.get("tasks") || []
   return tasks;
 }
 
-export const addTask = async (task: NewTask) => {
+const addTask = async (task: NewTask) => {
   const tasks = await getTasks() as Task[];
   tasks.push(task)
   await store.set("tasks", tasks);
   return tasks;
 }
 
-export const deleteTask = async (id: string) => {
+const deleteTask = async (id: string) => {
   const tasks = await getTasks() as Task[];
   const taskIndex = tasks.findIndex(task => task.id === id);
   if (taskIndex !== -1) {
@@ -29,7 +29,7 @@ export const deleteTask = async (id: string) => {
   }
 }
 
-export const updateTask = async (id: string, task: UpdateTaskInput) => {
+const updateTask = async (id: string, task: UpdateTaskInput) => {
   const tasks = await getTasks() as Task[];
   const taskIndex = tasks.findIndex(t => t.id === id)
   if (taskIndex !== -1) {
@@ -41,6 +41,20 @@ export const updateTask = async (id: string, task: UpdateTaskInput) => {
     console.error(`Task with ID ${id} not found.`);
     return tasks;
   }
+}
+
+const reorderTasks = async (source_idx: number, destination_idx: number) => {
+  const tasks = await getTasks() as Task[];
+  const unCompletedTasks = tasks.filter(t => t.completed == false)
+  const completedTasks = tasks.filter(t => t.completed == true)
+
+  const items = [...unCompletedTasks];
+  const [draggedItem] = items.splice(source_idx, 1);
+  items.splice(destination_idx, 0, draggedItem).concat(completedTasks);
+
+  const newTasks = items.concat(completedTasks)
+  await store.set("tasks", newTasks)
+  return newTasks;
 }
 
 export const useTaskStore = create((set) => ({
@@ -65,6 +79,10 @@ export const useTaskStore = create((set) => ({
   undoCompleteTask: async (id: string) => {
     const current = new Date();
     const tasks = await updateTask(id, { completed: false, updated_at: current })
+    set({ tasks: tasks })
+  },
+  reorderTasks: async (source_idx: number, destination_idx: number) => {
+    const tasks = await reorderTasks(source_idx, destination_idx)
     set({ tasks: tasks })
   }
 }))
