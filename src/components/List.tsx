@@ -8,7 +8,7 @@ import {
 import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import Dialog from "./Dialog";
 import Collapse from "./Collapse";
@@ -48,8 +48,8 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tasks.map(({ id, title, description, completed }, index) => {
-                return !completed && (
+              {tasks.filter(t => t.completed == false).map(({ id, title, description, completed }, index) => {
+                return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
                       <Card asChild
@@ -93,8 +93,8 @@ export default function List() {
         </Droppable >
       </DragDropContext >
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
-        {tasks.map(({ id, title, description, completed }) => {
-          return completed && (
+        {tasks.filter(t => t.completed == true).map(({ id, title, description, completed }) => {
+          return (
             <Card
               asChild
               className="mb-2"
