@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { RowSpacingIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { useSpring, animated } from "@react-spring/web";
+import { Badge } from '@radix-ui/themes';
 
 export default function Collapse(props: any) {
   const [open, setOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function Collapse(props: any) {
         <span className="text-violet11 text-[15px] leading-[25px]">
           Completed
         </span>
+        <Badge color="blue">{props.completedQty || 0}</Badge>
         <Collapsible.Trigger asChild>
           <button className="rounded-full h-[25px] w-[25px] inline-flex items-center justify-center text-violet11 shadow-[0_2px_10px] shadow-blackA4 outline-none data-[state=closed]:bg-white data-[state=open]:bg-violet3 hover:bg-violet3 focus:shadow-[0_0_0_2px] focus:shadow-black">
             {open ? <Cross2Icon /> : <RowSpacingIcon />}

@@ -29,6 +29,10 @@ export default function List() {
     taskStore.completeTask(id)
   }
 
+  const onUndoComplete = (id: string) => {
+    taskStore.undoCompleteTask(id)
+  }
+
   useEffect(() => {
     async function fetch() { await taskStore.getTasks() };
     fetch();
@@ -62,7 +66,7 @@ export default function List() {
                                   <TrashIcon width="18" height="18" />
                                 </IconButton>
                               </Dialog>
-                              <IconButton onClick={() => onComplete(id)} color="cyan" variant="soft" size="1" >
+                              <IconButton onClick={() => onComplete(id)} color="cyan" variant="outline" size="1" >
                                 <CheckIcon width="18" height="18" />
                               </IconButton>
                             </Flex>
@@ -88,8 +92,8 @@ export default function List() {
           }
         </Droppable >
       </DragDropContext >
-      <Collapse>
-        {tasks.map(({ id, title, description, completed }, index) => {
+      <Collapse completedQty={tasks.filter(t => t.completed).length}>
+        {tasks.map(({ id, title, description, completed }) => {
           return completed && (
             <Card
               asChild
@@ -103,7 +107,7 @@ export default function List() {
                         <TrashIcon width="18" height="18" />
                       </IconButton>
                     </Dialog>
-                    <IconButton color="cyan" variant="soft" size="1" >
+                    <IconButton onClick={() => onUndoComplete(id)} color="cyan" variant="soft" size="1" >
                       <CheckIcon width="18" height="18" />
                     </IconButton>
                   </Flex>

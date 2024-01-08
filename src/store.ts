@@ -54,11 +54,17 @@ export const useTaskStore = create((set) => ({
     set({ tasks: tasks })
   },
   deleteTask: async (id: string) => {
-    const tasks = await deleteTask(id)
+    const tasks = await deleteTask(id);
     set({ tasks: tasks })
   },
   completeTask: async (id: string) => {
-    const tasks = await updateTask(id, { completed: true })
+    const current = new Date();
+    const tasks = await updateTask(id, { completed: true, updated_at: current })
+    set({ tasks: tasks })
+  },
+  undoCompleteTask: async (id: string) => {
+    const current = new Date();
+    const tasks = await updateTask(id, { completed: false, updated_at: current })
     set({ tasks: tasks })
   }
 }))
