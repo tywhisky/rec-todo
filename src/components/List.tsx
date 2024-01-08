@@ -11,6 +11,7 @@ import { Task } from "../types/Task";
 import { useEffect } from "react";
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import Dialog from "./Dialog";
+import Collapse from "./Collapse";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -83,6 +84,40 @@ export default function List() {
           }
         </Droppable >
       </DragDropContext >
+      <Collapse>
+        {tasks.map(({ id, title, description, completed }, index) => {
+          return (
+            <Card
+              asChild
+              className="mb-2"
+              size="1">
+              <Box>
+                <Flex gap="2" direction="row-reverse" justify="between">
+                  <Flex gap="2">
+                    <Dialog id={id} title={title}>
+                      <IconButton color="crimson" variant="soft" size="1">
+                        <TrashIcon width="18" height="18" />
+                      </IconButton>
+                    </Dialog>
+                    <IconButton color="cyan" variant="soft" size="1" >
+                      <CheckIcon width="18" height="18" />
+                    </IconButton>
+                  </Flex>
+                  <Box className={completed && "line-through text-gray-500" || ""}>
+                    <Text as="div" size="2" weight="bold">
+                      {title}
+                    </Text>
+                    <Text as="div" size="2" color="gray">
+                      {description}
+                    </Text>
+                  </Box>
+                </Flex>
+              </Box>
+            </Card>
+
+          );
+        })}
+      </Collapse>
     </div >
   );
 }
