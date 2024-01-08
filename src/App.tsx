@@ -6,10 +6,11 @@ import { useTaskStore } from "./store";
 import { NewTask } from "./types/Task";
 
 function App() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const taskStore: any = useTaskStore();
 
   const handleKeyEnter = (event: { key: string; }) => {
+    if (inputValue == "") return
     if (event.key === 'Enter') {
       const new_task = new NewTask({ title: inputValue })
       taskStore.addTask(new_task)

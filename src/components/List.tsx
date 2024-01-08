@@ -66,7 +66,7 @@ export default function List() {
                                   <TrashIcon width="18" height="18" />
                                 </IconButton>
                               </Dialog>
-                              <IconButton onClick={() => onComplete(id)} color="cyan" variant="outline" size="1" >
+                              <IconButton onClick={() => onComplete(id)} color="purple" variant="outline" size="1" >
                                 <CheckIcon width="18" height="18" />
                               </IconButton>
                             </Flex>
@@ -107,7 +107,7 @@ export default function List() {
                         <TrashIcon width="18" height="18" />
                       </IconButton>
                     </Dialog>
-                    <IconButton onClick={() => onUndoComplete(id)} color="cyan" variant="soft" size="1" >
+                    <IconButton onClick={() => onUndoComplete(id)} color="purple" variant="soft" size="1" >
                       <CheckIcon width="18" height="18" />
                     </IconButton>
                   </Flex>
