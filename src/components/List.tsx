@@ -68,17 +68,16 @@ export default function List() {
                               </IconButton>
                             </Flex>
                             <Box className={completed && "line-through text-gray-500" || ""}>
-                              <Text as="div" size="2" weight="bold">
+                              <Text as="div" size="2">
                                 {title}
                               </Text>
-                              <Text as="div" size="2" color="gray">
+                              <Text as="div" size="1" color="gray">
                                 {description}
                               </Text>
                             </Box>
                           </Flex>
                         </Box>
                       </Card>
-
                     )}
                   </Draggable>
                 );
@@ -110,10 +109,10 @@ export default function List() {
                     </IconButton>
                   </Flex>
                   <Box className={completed && "line-through text-gray-500" || ""}>
-                    <Text as="div" size="2" weight="bold">
+                    <Text as="div" size="2">
                       {title}
                     </Text>
-                    <Text as="div" size="2" color="gray">
+                    <Text as="div" size="1" color="gray">
                       {description}
                     </Text>
                   </Box>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
-import { RowSpacingIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { ChevronRightIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import { useSpring, animated } from "@react-spring/web";
 import { Badge } from '@radix-ui/themes';
 
@@ -14,17 +14,15 @@ export default function Collapse(props: any) {
 
   return (
     <Collapsible.Root className="w-full" open={open} onOpenChange={setOpen}>
-      <div className="w-[150px] border-solid border-b-2 border-violet11 py-1 flex items-center justify-between mb-2">
-        <span className="text-violet11 text-[15px] leading-[25px]">
-          Completed
-        </span>
-        <Badge color="purple">{props.completedQty || 0}</Badge>
-        <Collapsible.Trigger asChild>
-          <button className="rounded-full h-[25px] w-[25px] inline-flex items-center justify-center text-violet11 shadow-[0_2px_10px] shadow-blackA4 outline-none data-[state=closed]:bg-white data-[state=open]:bg-violet3 hover:bg-violet3 focus:shadow-[0_0_0_2px] focus:shadow-black">
-            {open ? <Cross2Icon /> : <RowSpacingIcon />}
-          </button>
-        </Collapsible.Trigger>
-      </div>
+      <Collapsible.Trigger asChild>
+        <div className="w-[150px] cursor-pointer select-none hover:bg-teal4 bg-teal3 px-2 rounded-lg py-1 flex items-center justify-between mb-2">
+          {open ? <ChevronDownIcon className='teal12' /> : <ChevronRightIcon className='teal12' />}
+          <span className="text-teal12 font-light text-[15px] leading-[25px]">
+            Completed
+          </span>
+          <Badge className='text-teal11'>{props.completedQty || 0}</Badge>
+        </div>
+      </Collapsible.Trigger>
       <Collapsible.Content>
         <animated.div style={styles}>
           {props.children}
