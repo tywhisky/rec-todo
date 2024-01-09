@@ -56,17 +56,7 @@ export default function List() {
                         {...provided.dragHandleProps}
                         size="1">
                         <Box>
-                          <Flex gap="2" direction="row-reverse" justify="between">
-                            <Flex gap="2">
-                              <Dialog id={id} title={title}>
-                                <IconButton color="crimson" variant="soft" size="1">
-                                  <TrashIcon width="18" height="18" />
-                                </IconButton>
-                              </Dialog>
-                              <IconButton onClick={() => onComplete(id)} color="purple" variant="outline" size="1" >
-                                <CheckIcon width="18" height="18" />
-                              </IconButton>
-                            </Flex>
+                          <Flex gap="2" justify="between">
                             <Box className={completed && "line-through text-gray-500" || ""}>
                               <Text as="div" size="2">
                                 {title}
@@ -75,6 +65,16 @@ export default function List() {
                                 {description}
                               </Text>
                             </Box>
+                            <Flex gap="2">
+                              <Dialog id={id} title={title}>
+                                <IconButton color="crimson" variant="soft" size="1">
+                                  <TrashIcon width="18" height="18" />
+                                </IconButton>
+                              </Dialog>
+                              <IconButton onClick={() => onComplete(id)} color="gray" variant="outline" size="1" >
+                                <CheckIcon width="18" height="18" />
+                              </IconButton>
+                            </Flex>
                           </Flex>
                         </Box>
                       </Card>
@@ -97,17 +97,7 @@ export default function List() {
               className="mb-2"
               size="1">
               <Box>
-                <Flex gap="2" direction="row-reverse" justify="between">
-                  <Flex gap="2">
-                    <Dialog id={id} title={title}>
-                      <IconButton color="crimson" variant="soft" size="1">
-                        <TrashIcon width="18" height="18" />
-                      </IconButton>
-                    </Dialog>
-                    <IconButton onClick={() => onUndoComplete(id)} color="purple" variant="soft" size="1" >
-                      <CheckIcon width="18" height="18" />
-                    </IconButton>
-                  </Flex>
+                <Flex gap="2" justify="between">
                   <Box className={completed && "line-through text-gray-500" || ""}>
                     <Text as="div" size="2">
                       {title}
@@ -116,6 +106,16 @@ export default function List() {
                       {description}
                     </Text>
                   </Box>
+                  <Flex gap="2">
+                    <Dialog id={id} title={title}>
+                      <IconButton color="crimson" variant="soft" size="1">
+                        <TrashIcon width="18" height="18" />
+                      </IconButton>
+                    </Dialog>
+                    <IconButton onClick={() => onUndoComplete(id)} color="teal" variant="soft" size="1" >
+                      <CheckIcon width="18" height="18" />
+                    </IconButton>
+                  </Flex>
                 </Flex>
               </Box>
             </Card>
