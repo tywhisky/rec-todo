@@ -25,7 +25,7 @@ export default function Dialog(props: any) {
           </AlertDialog.Cancel>
           <AlertDialog.Action>
             <Button onClick={() => { onDelete(props.id) }} variant="solid" color="red">
-              Access
+              Confirm
             </Button>
           </AlertDialog.Action>
         </Flex>
