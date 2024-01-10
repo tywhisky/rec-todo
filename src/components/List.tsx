@@ -82,7 +82,7 @@ export default function List() {
                             </Box>
                             <Flex gap="2">
                               <Dialog id={id} title={title}>
-                                <IconButton color="crimson" variant="soft" size="1">
+                                <IconButton color="gray" variant="outline" size="1">
                                   <TrashIcon width="18" height="18" />
                                 </IconButton>
                               </Dialog>
@@ -123,7 +123,7 @@ export default function List() {
                   </Box>
                   <Flex gap="2">
                     <Dialog id={id} title={title}>
-                      <IconButton color="crimson" variant="soft" size="1">
+                      <IconButton color="gray" variant="soft" size="1">
                         <TrashIcon width="18" height="18" />
                       </IconButton>
                     </Dialog>
@@ -138,6 +138,6 @@ export default function List() {
           );
         })}
       </Collapse>
-    </div >
+    </div>
   );
 }

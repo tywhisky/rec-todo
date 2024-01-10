@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 #root {
-  height: 100vh;
   padding-top: 30px;
+  padding-bottom: 110px;
 }
 
 .titlebar {
@@ -16,6 +16,7 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: 999;
 }
 
 .titlebar-button {
@@ -24,4 +25,8 @@
   align-items: center;
   width: 30px;
   height: 30px;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }

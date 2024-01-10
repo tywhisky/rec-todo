@@ -40,7 +40,7 @@ function ButtonField(props: ButtonFieldProps) {
       align="center" className="hover:bg-gray-100 w-full active:bg-gray-200 select-none py-1 rounded cursor-pointer">
       <CalendarIcon width="16" className="ml-[6px] mr-[6.5px]" />
       <Text size="1" className={label ? "text-[#333333]" : "text-gray-400"}>
-        {label ? `${label}` : 'Pick a date'}
+        {label ? `${label}` : 'Date/time'}
       </Text>
     </Flex>
   );

@@ -1,5 +1,5 @@
 import { Box, Flex } from "@radix-ui/themes";
-import { Cross1Icon, PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
 import { useState } from "react";
 import { useTaskStore } from "../store";
 import { NewTask } from "../types/Task";
@@ -28,8 +28,8 @@ export default function AddTask() {
   };
 
   return (
-    <div className="fixed bottom-[-20px] w-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border p-2 rounded-2xl">
-      <Flex align="center" gap="2" className="w-full">
+    <div className="fixed justify-center flex backdrop-blur-sm bottom-[-60px] h-[120px] w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 border p-2">
+      <Flex align="center" gap="2" className="w-1/2 border rounded-2xl p-2">
         <Flex direction="column" className="w-full">
           <input value={title} onChange={(e) => setTitle(e.target.value)} onKeyDown={handleKeyEnter} className="w-full text-base h-6 px-2 outline-none" placeholder="Title" />
           <Flex align="center">
