@@ -29,12 +29,13 @@ export default function AddTask() {
 
   return (
     <div className="fixed justify-center flex backdrop-blur-sm bottom-[-60px] h-[120px] w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 border p-2">
-      <Flex align="center" gap="2" className="w-1/2 border rounded-2xl p-2">
+      <Flex align="center" gap="2" className="w-1/2 border bg-white rounded-2xl p-2">
         <Flex direction="column" className="w-full">
           <input value={title} onChange={(e) => setTitle(e.target.value)} onKeyDown={handleKeyEnter} className="w-full text-base h-6 px-2 outline-none" placeholder="Title" />
           <Flex align="center">
             {!focus && <ReaderIcon width="16" className="ml-[6px]" />}
-            <input value={description} onChange={(e) => setDescription(e.target.value)} onKeyDown={handleKeyEnter} className="w-full text-xs h-6 px-2 outline-none" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} placeholder="Description" />
+            <input value={description} onChange={(e) => setDescription(e.target.value)} onKeyDown={handleKeyEnter} className="w-full
+            text-xs h-6 px-2 outline-none" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} placeholder="Description" />
           </Flex>
           <Flex align="center" justify="between">
             <DateTimePicker
