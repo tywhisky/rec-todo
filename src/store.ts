@@ -11,7 +11,7 @@ const getTasks = async () => {
 
 const addTask = async (task: NewTask) => {
   const tasks = await getTasks() as Task[];
-  tasks.push(task)
+  tasks.unshift(task)
   await store.set("tasks", tasks);
   return tasks;
 }

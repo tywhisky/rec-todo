@@ -9,10 +9,10 @@ import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { useEffect } from "react";
-import { CheckIcon, ClockIcon, TrashIcon } from "@radix-ui/react-icons";
-import Dialog from "./Dialog";
+import { CheckIcon, ClockIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
 import dayjs from "dayjs";
+import TaskContextMenu from "./ContextMenu";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -32,7 +32,7 @@ export default function List() {
   }
 
   const deadlineStyle = (deadline: Date) => {
-    return dayjs().isBefore(dayjs(deadline)) && "text-yellow-500" || "text-red-500"
+    return dayjs().isBefore(dayjs(deadline)) && "text-gray-500" || "text-red-500"
   }
 
   useEffect(() => {
@@ -54,45 +54,41 @@ export default function List() {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
-                      <Card asChild
-                        className="mb-2"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        size="1">
-                        <Box>
-                          <Flex gap="2" justify="between">
-                            <Box className={completed && "line-through text-gray-500" || ""}>
-                              <Text as="div" size="2">
-                                {title}
-                              </Text>
-                              <Text as="div" size="1" color="gray">
-                                {description}
-                              </Text>
-                              {
-                                deadline && (
-                                  <Flex align="center">
-                                    <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
-                                    <Text size="1" className={deadlineStyle(deadline)}>
-                                      {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
-                                    </Text>
-                                  </Flex>
-                                )
-                              }
-                            </Box>
-                            <Flex gap="2">
-                              <Dialog id={id} title={title}>
-                                <IconButton color="gray" variant="outline" size="1">
-                                  <TrashIcon width="18" height="18" />
-                                </IconButton>
-                              </Dialog>
+                      <TaskContextMenu id={id} title={title}>
+                        <Card
+                          asChild
+                          className="mb-2"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          size="1">
+                          <Box>
+                            <Flex gap="2" justify="between">
+                              <Box className={completed && "line-through text-gray-500" || ""}>
+                                <Text as="div" size="2">
+                                  {title}
+                                </Text>
+                                <Text as="div" size="1" color="gray">
+                                  {description}
+                                </Text>
+                                {
+                                  deadline && (
+                                    <Flex align="center">
+                                      <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
+                                      <Text size="1" className={deadlineStyle(deadline)}>
+                                        {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                      </Text>
+                                    </Flex>
+                                  )
+                                }
+                              </Box>
                               <IconButton onClick={() => onComplete(id)} color="gray" variant="outline" size="1" >
                                 <CheckIcon width="18" height="18" />
                               </IconButton>
                             </Flex>
-                          </Flex>
-                        </Box>
-                      </Card>
+                          </Box>
+                        </Card>
+                      </TaskContextMenu>
                     )}
                   </Draggable>
                 );
@@ -106,35 +102,29 @@ export default function List() {
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
         {tasks.filter(t => t.completed == true).map(({ id, title, description, completed }) => {
           return (
-            <Card
-              asChild
-              key={id}
-              className="mb-2"
-              size="1">
-              <Box>
-                <Flex gap="2" justify="between">
-                  <Box className={completed && "line-through text-gray-500" || ""}>
-                    <Text as="div" size="2">
-                      {title}
-                    </Text>
-                    <Text as="div" size="1" color="gray">
-                      {description}
-                    </Text>
-                  </Box>
-                  <Flex gap="2">
-                    <Dialog id={id} title={title}>
-                      <IconButton color="gray" variant="soft" size="1">
-                        <TrashIcon width="18" height="18" />
-                      </IconButton>
-                    </Dialog>
+            <TaskContextMenu id={id} title={title}>
+              <Card
+                asChild
+                key={id}
+                className="mb-2"
+                size="1">
+                <Box>
+                  <Flex gap="2" justify="between">
+                    <Box className={completed && "line-through text-gray-500" || ""}>
+                      <Text as="div" size="2">
+                        {title}
+                      </Text>
+                      <Text as="div" size="1" color="gray">
+                        {description}
+                      </Text>
+                    </Box>
                     <IconButton onClick={() => onUndoComplete(id)} color="teal" variant="soft" size="1" >
                       <CheckIcon width="18" height="18" />
                     </IconButton>
                   </Flex>
-                </Flex>
-              </Box>
-            </Card>
-
+                </Box>
+              </Card>
+            </TaskContextMenu>
           );
         })}
       </Collapse>
