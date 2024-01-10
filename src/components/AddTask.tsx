@@ -1,5 +1,5 @@
-import { Flex, Text } from "@radix-ui/themes";
-import { CalendarIcon, Cross1Icon, PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { Flex } from "@radix-ui/themes";
+import { Cross1Icon, PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
 import { useState } from "react";
 import { useTaskStore } from "../store";
 import { NewTask } from "../types/Task";
@@ -22,6 +22,7 @@ export default function AddTask() {
       setDescription("")
     }
   };
+
   return (
     <div className="fixed bottom-[-20px] w-4/12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border p-2 rounded">
       <Flex gap="2" className="w-full">
