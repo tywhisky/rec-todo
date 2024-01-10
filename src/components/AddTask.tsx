@@ -1,12 +1,15 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { CalendarIcon, PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { CalendarIcon, Cross1Icon, PlusIcon, ReaderIcon } from '@radix-ui/react-icons'
 import { useState } from "react";
 import { useTaskStore } from "../store";
 import { NewTask } from "../types/Task";
+import { Dayjs } from 'dayjs';
+import DateTimePicker from "./DateTimePicker";
+
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [deadline, setDeadline] = useState<Dayjs | null>(null);
   const [focus, setFocus] = useState<boolean>(false);
   const taskStore: any = useTaskStore();
 
@@ -29,9 +32,13 @@ export default function AddTask() {
             {!focus && <ReaderIcon width="16" className="ml-[6px]" />}
             <input value={description} onChange={(e) => setDescription(e.target.value)} onKeyDown={handleKeyEnter} className="w-full text-xs h-6 px-2 outline-none" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} placeholder="Description" />
           </Flex>
-          <Flex align="center" className="hover:bg-gray-100 active:bg-gray-200 select-none py-1 rounded cursor-pointer">
-            <CalendarIcon width="16" className="ml-[6px] mr-[6.5px]" />
-            <Text className="text-gray-400 text-xs">Date/time</Text>
+          <Flex align="center" justify="between">
+            <DateTimePicker
+              label={deadline == null ? null : deadline.format('MM/DD/YYYY HH:mm:ss')}
+              value={deadline}
+              onChange={(newValue: Dayjs) => setDeadline(newValue)}
+            />
+            {deadline && (<Cross1Icon height="12" width="12" className="ml-2 mr-1 cursor-pointer" onClick={() => setDeadline(null)} />)}
           </Flex>
         </Flex>
       </Flex>
