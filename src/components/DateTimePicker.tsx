@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { UseDateFieldProps } from '@mui/x-date-pickers/DateField';
 import {
   BaseSingleInputFieldProps,
@@ -60,7 +60,7 @@ export default function DateTimePicker(props: any) {
   return (
     <ThemeProvider theme={theme}>
       <MobileDateTimePicker
-        defaultValue={new Date()}
+        minDateTime={dayjs()}
         slots={{ field: ButtonField, ...props.slots }}
         slotProps={{ field: { setOpen } as any }}
         {...props}
