@@ -29,7 +29,7 @@ export default function AddTask() {
 
   return (
     <div className="fixed bottom-[-20px] w-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border p-2 rounded-2xl">
-      <Flex align="center" className="w-full">
+      <Flex align="center" gap="2" className="w-full">
         <Flex direction="column" className="w-full">
           <input value={title} onChange={(e) => setTitle(e.target.value)} onKeyDown={handleKeyEnter} className="w-full text-base h-6 px-2 outline-none" placeholder="Title" />
           <Flex align="center">
@@ -42,7 +42,7 @@ export default function AddTask() {
               value={deadline}
               onChange={(newValue: Dayjs) => setDeadline(newValue)}
             />
-            {deadline && (<Cross1Icon height="12" width="12" className="ml-2 mr-1 cursor-pointer" onClick={() => setDeadline(null)} />)}
+            {/* {deadline && (<Cross1Icon height="12" width="12" className="ml-2 mr-1 cursor-pointer" onClick={() => setDeadline(null)} />)} */}
           </Flex>
         </Flex>
         <Box className="bg-teal-100 rounded-full active:bg-teal-200 hover:bg-teal-200">

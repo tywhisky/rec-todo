@@ -62,7 +62,7 @@ export default function DateTimePicker(props: any) {
       <MobileDateTimePicker
         minDateTime={dayjs()}
         slots={{ field: ButtonField, ...props.slots }}
-        slotProps={{ field: { setOpen } as any }}
+        slotProps={{ field: { setOpen } as any, actionBar: { actions: ['clear', 'accept'] } }}
         {...props}
         open={open}
         onClose={() => setOpen(false)}
