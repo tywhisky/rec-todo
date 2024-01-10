@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Dayjs } from 'dayjs';
-import Button from '@mui/material/Button';
-import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { UseDateFieldProps } from '@mui/x-date-pickers/DateField';
 import {
   BaseSingleInputFieldProps,
@@ -10,7 +8,8 @@ import {
 } from '@mui/x-date-pickers/models';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { Flex, Text } from '@radix-ui/themes';
-import { CalendarIcon, Cross1Icon } from '@radix-ui/react-icons';
+import { CalendarIcon, } from '@radix-ui/react-icons';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 interface ButtonFieldProps
   extends UseDateFieldProps<Dayjs>,
@@ -50,14 +49,25 @@ function ButtonField(props: ButtonFieldProps) {
 export default function DateTimePicker(props: any) {
   const [open, setOpen] = React.useState(false);
 
+  const theme = createTheme(
+    {
+      palette: {
+        primary: { main: "#12A594" },
+      },
+    },
+  );
+
   return (
-    <MobileDateTimePicker
-      slots={{ field: ButtonField, ...props.slots }}
-      slotProps={{ field: { setOpen } as any }}
-      {...props}
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-    />
+    <ThemeProvider theme={theme}>
+      <MobileDateTimePicker
+        defaultValue={new Date()}
+        slots={{ field: ButtonField, ...props.slots }}
+        slotProps={{ field: { setOpen } as any }}
+        {...props}
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+      />
+    </ThemeProvider>
   );
 }
