@@ -16,10 +16,11 @@ export default function AddTask() {
   const handleKeyEnter = (event: { key: string; }) => {
     if (title == "") return
     if (event.key === 'Enter') {
-      const new_task = new NewTask({ title: title, description: description })
+      const new_task = new NewTask({ title: title, description: description, deadline: deadline?.toDate() })
       taskStore.addTask(new_task)
       setTitle("")
       setDescription("")
+      setDeadline(null)
     }
   };
 

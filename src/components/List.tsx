@@ -9,9 +9,10 @@ import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { useEffect } from "react";
-import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ClockIcon, TrashIcon } from "@radix-ui/react-icons";
 import Dialog from "./Dialog";
 import Collapse from "./Collapse";
+import dayjs from "dayjs";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -30,6 +31,10 @@ export default function List() {
     taskStore.undoCompleteTask(id)
   }
 
+  const deadlineStyle = (deadline: Date) => {
+    return dayjs().isBefore(dayjs(deadline)) && "text-yellow-500" || "text-red-500"
+  }
+
   useEffect(() => {
     async function fetch() { await taskStore.getTasks() };
     fetch();
@@ -45,7 +50,7 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tasks.filter(t => t.completed == false).map(({ id, title, description, completed }, index) => {
+              {tasks.filter(t => t.completed == false).map(({ id, title, description, completed, deadline }, index) => {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
@@ -64,6 +69,16 @@ export default function List() {
                               <Text as="div" size="1" color="gray">
                                 {description}
                               </Text>
+                              {
+                                deadline && (
+                                  <Flex align="center">
+                                    <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
+                                    <Text size="1" className={deadlineStyle(deadline)}>
+                                      {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                    </Text>
+                                  </Flex>
+                                )
+                              }
                             </Box>
                             <Flex gap="2">
                               <Dialog id={id} title={title}>
