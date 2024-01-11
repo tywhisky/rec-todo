@@ -9,6 +9,10 @@ const getTasks = async () => {
   return tasks;
 }
 
+const updateTasks = async (tasks: Task[]) => {
+  await store.set("tasks", tasks)
+}
+
 const addTask = async (task: NewTask) => {
   const tasks = await getTasks() as Task[];
   tasks.unshift(task)
@@ -81,8 +85,16 @@ export const useTaskStore = create((set) => ({
     const tasks = await updateTask(id, { completed: false, updated_at: current })
     set({ tasks: tasks })
   },
-  reorderTasks: async (source_idx: number, destination_idx: number) => {
-    const tasks = await reorderTasks(source_idx, destination_idx)
-    set({ tasks: tasks })
+  reorderTasks: (tasks: Task[], source_idx: number, destination_idx: number) => {
+    const unCompletedTasks = tasks.filter(t => t.completed == false)
+    const completedTasks = tasks.filter(t => t.completed == true)
+
+    const items = [...unCompletedTasks];
+    const [draggedItem] = items.splice(source_idx, 1);
+    items.splice(destination_idx, 0, draggedItem).concat(completedTasks);
+    const newTasks = items.concat(completedTasks)
+
+    set({ tasks: newTasks })
+    updateTasks(newTasks)
   }
 }))
