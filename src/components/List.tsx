@@ -106,7 +106,7 @@ export default function List() {
               <Card
                 asChild
                 key={id}
-                className="mb-2"
+                className="mb-2 select-none"
                 size="1">
                 <Box>
                   <Flex gap="2" justify="between">
