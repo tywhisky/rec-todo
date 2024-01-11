@@ -102,7 +102,7 @@ export default function List() {
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
         {tasks.filter(t => t.completed == true).map(({ id, title, description, completed }) => {
           return (
-            <TaskContextMenu id={id} title={title}>
+            <TaskContextMenu key={id} id={id} title={title}>
               <Card
                 asChild
                 key={id}
