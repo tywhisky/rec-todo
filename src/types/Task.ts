@@ -7,8 +7,9 @@ export interface Task {
   description?: string;
   completed?: boolean;
   deadline?: Date;
-  inserted_at: Date;
-  updated_at: Date;
+  insertedAt: Date;
+  updatedAt: Date;
+  completedAt?: Date;
 }
 
 interface NewTaskInput {
@@ -23,8 +24,9 @@ export interface UpdateTaskInput {
   description?: string;
   completed?: boolean;
   deadline?: Date;
-  inserted_at?: Date;
-  updated_at?: Date;
+  insertedAt?: Date;
+  updatedAt?: Date;
+  completedAt?: Date;
 }
 
 export class NewTask implements Task {
@@ -34,8 +36,9 @@ export class NewTask implements Task {
   description?: string;
   completed?: boolean;
   deadline?: Date;
-  inserted_at: Date;
-  updated_at: Date;
+  insertedAt: Date;
+  updatedAt: Date;
+  completedAt?: Date;
 
   constructor(data: NewTaskInput) {
     const currentDate = new Date();
@@ -46,7 +49,7 @@ export class NewTask implements Task {
     this.description = data.description;
     this.completed = false;
     this.deadline = data.deadline;
-    this.inserted_at = currentDate;
-    this.updated_at = currentDate;
+    this.insertedAt = currentDate;
+    this.updatedAt = currentDate;
   }
 }

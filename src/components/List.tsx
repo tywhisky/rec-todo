@@ -50,21 +50,21 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tasks.filter(t => t.completed == false).map(({ id, title, description, completed, deadline }, index) => {
+              {tasks.filter(t => t.completed == false).map(({ id, title, description, deadline }, index) => {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
                       <TaskContextMenu id={id} title={title}>
                         <Card
                           asChild
-                          className="mb-2"
+                          className="mb-2 select-none"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           size="1">
                           <Box>
                             <Flex gap="2" justify="between">
-                              <Box className={completed && "line-through text-gray-500" || ""}>
+                              <Box>
                                 <Text as="div" size="2">
                                   {title}
                                 </Text>
@@ -100,7 +100,7 @@ export default function List() {
         </Droppable >
       </DragDropContext >
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
-        {tasks.filter(t => t.completed == true).map(({ id, title, description, completed }) => {
+        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt }) => {
           return (
             <TaskContextMenu key={id} id={id} title={title}>
               <Card
@@ -110,13 +110,19 @@ export default function List() {
                 size="1">
                 <Box>
                   <Flex gap="2" justify="between">
-                    <Box className={completed && "line-through text-gray-500" || ""}>
-                      <Text as="div" size="2">
+                    <Box >
+                      <Text className="line-through text-gray-500" as="div" size="2">
                         {title}
                       </Text>
-                      <Text as="div" size="1" color="gray">
+                      <Text className="line-through text-gray-500" as="div" size="1" color="gray">
                         {description}
                       </Text>
+                      <Flex>
+                        <CheckIcon color="gray" />
+                        <Text as="div" size="1" color="gray">
+                          {dayjs(completedAt).format("MM/DD/YYYY HH:mm:ss")}
+                        </Text>
+                      </Flex>
                     </Box>
                     <IconButton onClick={() => onUndoComplete(id)} color="teal" variant="soft" size="1" >
                       <CheckIcon width="18" height="18" />
