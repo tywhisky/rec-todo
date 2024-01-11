@@ -13,19 +13,18 @@ const updateTasks = async (tasks: Task[]) => {
   await store.set("tasks", tasks)
 }
 
-const addTask = async (task: NewTask) => {
-  const tasks = await getTasks() as Task[];
+// The follow functions do not have `store.set` because
+// the store state should be updated after zustand.
+
+const addTask = (tasks: Task[], task: NewTask) => {
   tasks.unshift(task)
-  await store.set("tasks", tasks);
   return tasks;
 }
 
-const deleteTask = async (id: string) => {
-  const tasks = await getTasks() as Task[];
+const deleteTask = (tasks: Task[], id: string) => {
   const taskIndex = tasks.findIndex(task => task.id === id);
   if (taskIndex !== -1) {
     tasks.splice(taskIndex, 1);
-    await store.set("tasks", tasks);
     return tasks;
   } else {
     console.error(`Task with ID ${id} not found.`);
@@ -33,13 +32,11 @@ const deleteTask = async (id: string) => {
   }
 }
 
-const updateTask = async (id: string, task: UpdateTaskInput) => {
-  const tasks = await getTasks() as Task[];
+const updateTask = (tasks: Task[], id: string, task: UpdateTaskInput) => {
   const taskIndex = tasks.findIndex(t => t.id === id)
   if (taskIndex !== -1) {
     const newTask = { ...tasks[taskIndex], ...task }
     const newTasks = [...tasks.slice(0, taskIndex), newTask, ...tasks.slice(taskIndex + 1)];
-    await store.set("tasks", newTasks);
     return newTasks;
   } else {
     console.error(`Task with ID ${id} not found.`);
@@ -47,54 +44,49 @@ const updateTask = async (id: string, task: UpdateTaskInput) => {
   }
 }
 
-const reorderTasks = async (source_idx: number, destination_idx: number) => {
-  const tasks = await getTasks() as Task[];
-  const unCompletedTasks = tasks.filter(t => t.completed == false)
-  const completedTasks = tasks.filter(t => t.completed == true)
-
-  const items = [...unCompletedTasks];
-  const [draggedItem] = items.splice(source_idx, 1);
-  items.splice(destination_idx, 0, draggedItem).concat(completedTasks);
-
-  const newTasks = items.concat(completedTasks)
-  await store.set("tasks", newTasks)
-  return newTasks;
-}
-
-export const useTaskStore = create((set) => ({
+export const useTaskStore = create((set, get: any) => ({
   tasks: [],
-  addTask: async (task: NewTask) => {
-    const tasks = await addTask(task)
-    set({ tasks: tasks })
-  },
   getTasks: async () => {
     const tasks = await getTasks();
-    set({ tasks: tasks })
+    set({ tasks: tasks });
   },
-  deleteTask: async (id: string) => {
-    const tasks = await deleteTask(id);
-    set({ tasks: tasks })
+  addTask: (task: NewTask) => {
+    const tasks = get().tasks;
+    const newTasks = addTask(tasks, task);
+    set({ tasks: newTasks });
   },
-  completeTask: async (id: string) => {
+  deleteTask: (id: string) => {
+    const tasks = get().tasks;
+    const newTasks = deleteTask(tasks, id);
+    set({ tasks: tasks });
+    updateTasks(newTasks);
+  },
+  completeTask: (id: string) => {
+    const tasks = get().tasks;
     const current = new Date();
-    const tasks = await updateTask(id, { completed: true, updated_at: current })
-    set({ tasks: tasks })
+    const newTasks = updateTask(tasks, id, { completed: true, updated_at: current });
+    set({ tasks: newTasks });
+    updateTasks(newTasks);
   },
-  undoCompleteTask: async (id: string) => {
+  undoCompleteTask: (id: string) => {
+    const tasks: Task[] = get().tasks;
     const current = new Date();
-    const tasks = await updateTask(id, { completed: false, updated_at: current })
-    set({ tasks: tasks })
+    const newTasks = updateTask(tasks, id, { completed: false, updated_at: current });
+    set({ tasks: newTasks });
+    updateTasks(newTasks);
   },
-  reorderTasks: (tasks: Task[], source_idx: number, destination_idx: number) => {
-    const unCompletedTasks = tasks.filter(t => t.completed == false)
-    const completedTasks = tasks.filter(t => t.completed == true)
+  reorderTasks: (source_idx: number, destination_idx: number) => {
+    const tasks: Task[] = get().tasks;
+
+    const unCompletedTasks = tasks.filter(t => t.completed == false);
+    const completedTasks = tasks.filter(t => t.completed == true);
 
     const items = [...unCompletedTasks];
     const [draggedItem] = items.splice(source_idx, 1);
     items.splice(destination_idx, 0, draggedItem).concat(completedTasks);
-    const newTasks = items.concat(completedTasks)
+    const newTasks = items.concat(completedTasks);
 
-    set({ tasks: newTasks })
-    updateTasks(newTasks)
+    set({ tasks: newTasks });
+    updateTasks(newTasks);
   }
 }))
