@@ -8,23 +8,37 @@ import {
 import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
-import { useEffect } from "react";
+import { createRef, useEffect, useRef } from "react";
 import { CheckIcon, ClockIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
 import dayjs from "dayjs";
 import TaskContextMenu from "./ContextMenu";
+import LineThroughAnimation from "./animation/LineThroughAnimation";
+import ItemDropAnimation from "./animation/ItemDropAnimation";
 
 export default function List() {
   const taskStore: any = useTaskStore()
   const tasks: Task[] = taskStore.tasks;
+
+  const lineThroughRefs = useRef<any>([]);
+  lineThroughRefs.current = tasks.map((_, i) => lineThroughRefs.current[i] ?? createRef());
+
+  const itemDropRefs = useRef<any>([]);
+  itemDropRefs.current = tasks.map((_, i) => itemDropRefs.current[i] ?? createRef());
 
   const handleOnDragEnd = (result: DropResult) => {
     if (!result || !result.destination) return;
     taskStore.reorderTasks(result.source.index, result.destination.index)
   };
 
-  const onComplete = (id: string) => {
-    taskStore.completeTask(id)
+  const onComplete = (id: string, index: number) => {
+    lineThroughRefs.current[index].current.showAnimation();
+    setTimeout(() => {
+      itemDropRefs.current[index].current.showAnimation();
+    }, 500)
+    setTimeout(() => {
+      taskStore.completeTask(id)
+    }, 1000)
   }
 
   const onUndoComplete = (id: string) => {
@@ -50,47 +64,51 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tasks.filter(t => t.completed == false).map(({ id, title, description, deadline }, index) => {
+              {tasks.filter(t => t.completed == false).map(({ id, title, description, deadline, completed }, index) => {
                 return (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
-                      <TaskContextMenu id={id} title={title}>
-                        <Card
-                          asChild
-                          className="mb-2 select-none"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          size="1">
-                          <Box>
-                            <Flex gap="2" justify="between">
-                              <Box>
-                                <Text as="div" size="2">
-                                  {title}
-                                </Text>
-                                <Text as="div" size="1" color="gray">
-                                  {description}
-                                </Text>
-                                {
-                                  deadline && (
-                                    <Flex align="center">
-                                      <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
-                                      <Text size="1" className={deadlineStyle(deadline)}>
-                                        {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
-                                      </Text>
-                                    </Flex>
-                                  )
-                                }
-                              </Box>
-                              <IconButton onClick={() => onComplete(id)} color="gray" variant="outline" size="1" >
-                                <CheckIcon width="18" height="18" />
-                              </IconButton>
-                            </Flex>
-                          </Box>
-                        </Card>
-                      </TaskContextMenu>
-                    )}
-                  </Draggable>
+                  <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
+                    <Draggable key={id} draggableId={id} index={index}>
+                      {(provided) => (
+                        <TaskContextMenu id={id} title={title}>
+                          <Card
+                            asChild
+                            className="mb-2 select-none"
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            size="1">
+                            <Box>
+                              <Flex gap="2" justify="between">
+                                <Box>
+                                  <LineThroughAnimation key={id} ref={lineThroughRefs.current[index]} completed={completed}>
+                                    <Text as="div" size="2">
+                                      {title}
+                                    </Text>
+                                  </LineThroughAnimation>
+                                  <Text as="div" size="1" color="gray">
+                                    {description}
+                                  </Text>
+                                  {
+                                    deadline && (
+                                      <Flex align="center">
+                                        <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
+                                        <Text size="1" className={deadlineStyle(deadline)}>
+                                          {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                        </Text>
+                                      </Flex>
+                                    )
+                                  }
+                                </Box>
+                                <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
+                                  <CheckIcon width="18" height="18" />
+                                </IconButton>
+                              </Flex>
+                            </Box>
+                          </Card>
+                        </TaskContextMenu>
+                      )}
+                    </Draggable>
+                  </ItemDropAnimation>
                 );
               })}
               {provided.placeholder}
