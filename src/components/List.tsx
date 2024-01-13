@@ -76,6 +76,11 @@ export default function List() {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              left: "auto !important",
+                              top: "auto !important",
+                            }}
                             size="1">
                             <Box>
                               <Flex gap="2" justify="between">
