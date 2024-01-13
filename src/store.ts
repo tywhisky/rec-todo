@@ -65,14 +65,24 @@ export const useTaskStore = create((set, get: any) => ({
     const tasks = get().tasks;
     const current = new Date();
     const newTasks = updateTask(tasks, id, { completed: true, updatedAt: current, completedAt: current });
-    set({ tasks: newTasks });
+    set((state: any) => ({
+      tasks:
+        state.tasks.map((task: Task) =>
+          task.id === id ? { ...task, completed: true, updatedAt: current, completedAt: current } : task
+        )
+    }));
     updateTasks(newTasks);
   },
   undoCompleteTask: (id: string) => {
     const tasks: Task[] = get().tasks;
     const current = new Date();
     const newTasks = updateTask(tasks, id, { completed: false, updatedAt: current });
-    set({ tasks: newTasks });
+    set((state: any) => ({
+      tasks:
+        state.tasks.map((task: Task) =>
+          task.id === id ? { ...task, completed: false, updatedAt: current } : task
+        )
+    }));
     updateTasks(newTasks);
   },
   reorderTasks: (source_idx: number, destination_idx: number) => {
