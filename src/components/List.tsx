@@ -8,7 +8,7 @@ import {
 import { Box, Flex, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
-import { CSSProperties, createRef, useEffect, useRef } from "react";
+import { CSSProperties, createRef, useEffect, useRef, useState } from "react";
 import { CheckIcon, ClockIcon, ReloadIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ import Checkbox from "./checkbox/index";
 export default function List() {
   const taskStore: any = useTaskStore()
   const tasks: Task[] = taskStore.tasks;
+  const [isCompleting, setIsCompleting] = useState(false);
 
   const lineThroughRefs = useRef<any>([]);
   lineThroughRefs.current = tasks.map((_, i) => lineThroughRefs.current[i] ?? createRef());
@@ -33,12 +34,14 @@ export default function List() {
   };
 
   const onComplete = (id: string, index: number) => {
+    setIsCompleting(true)
     lineThroughRefs.current[index].current.showAnimation();
     setTimeout(() => {
       itemDropRefs.current[index].current.showAnimation();
     }, 300)
     setTimeout(() => {
       taskStore.completeTask(id)
+      setIsCompleting(false)
     }, 800)
   }
 
@@ -87,7 +90,10 @@ export default function List() {
                         >
                           <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
                             <Box
-                              className="mb-1 select-none bg-gray-200 bg-opacity-50 backdrop-blur-sm p-3 rounded-2xl"
+                              className={
+                                `mb-1 select-none bg-gray-200 bg-opacity-50 backdrop-blur-sm p-3 rounded-2xl
+                                ${isCompleting && "pointer-events-none"}`
+                              }
                               style={getItemStyle(snapshot.isDragging)}
                             >
                               <Flex gap="2" justify="between">
