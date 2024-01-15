@@ -8,7 +8,7 @@ import {
 import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
-import { createRef, useEffect, useRef } from "react";
+import { CSSProperties, createRef, useEffect, useRef } from "react";
 import { CheckIcon, ClockIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
 import dayjs from "dayjs";
@@ -49,6 +49,10 @@ export default function List() {
     return dayjs().isBefore(dayjs(deadline)) && "text-gray-500" || "text-red-500"
   }
 
+  const getItemStyle = (isDragging: boolean): CSSProperties => ({
+    boxShadow: isDragging && "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px" || ""
+  });
+
   useEffect(() => {
     async function fetch() { await taskStore.getTasks() };
     fetch();
@@ -80,10 +84,7 @@ export default function List() {
                           <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
                             <Box
                               className="mb-2 select-none rounded border backdrop-blur-sm p-3"
-                              style={{
-                                boxShadow: snapshot.isDragging ? "0px 2px 8px 0px rgba(99, 99, 99, 0.2)" : "",
-
-                              }}
+                              style={getItemStyle(snapshot.isDragging)}
                             >
                               <Flex gap="2" justify="between">
                                 <Box>
