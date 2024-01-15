@@ -46,7 +46,7 @@ export default function AddTask() {
             {/* {deadline && (<Cross1Icon height="12" width="12" className="ml-2 mr-1 cursor-pointer" onClick={() => setDeadline(null)} />)} */}
           </Flex>
         </Flex>
-        <Box className="bg-teal-100 rounded-full active:bg-teal-200 hover:bg-teal-200">
+        <Box className="bg-teal2 rounded-full active:bg-teal3 hover:bg-teal3">
           <IconButton onClick={() => onAddTask()} className="shrink-0">
             <PlusIcon height="18" width="18" className="text-teal12" />
           </IconButton>
