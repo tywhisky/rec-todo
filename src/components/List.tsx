@@ -75,8 +75,6 @@ export default function List() {
                           {...provided.dragHandleProps}
                           style={{
                             ...provided.draggableProps.style,
-                            left: "auto !important",
-                            top: "auto !important",
                           }}
                         >
                           <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
