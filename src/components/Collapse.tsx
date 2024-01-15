@@ -15,15 +15,17 @@ export default function Collapse(props: any) {
   return (
     <Collapsible.Root className="w-full" open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger asChild>
-        <div className="w-[150px] transition duration-300 ease-in-out cursor-pointer select-none hover:bg-teal4 bg-teal3 px-2 rounded-lg py-[2px] flex items-center justify-between my-2">
-          <Flex align="center">
-            {open ? <ChevronDownIcon className='teal12' /> : <ChevronRightIcon className='teal12' />}
-            <span className="text-teal12 font-light text-[14px] leading-[25px] ml-1">
-              Completed
-            </span>
-          </Flex>
-          <Badge className='text-teal11'>{props.completedQty || 0}</Badge>
-        </div>
+        {props.completedQty && (
+          <div className="w-[150px] transition duration-300 ease-in-out cursor-pointer select-none hover:bg-teal4 bg-teal3 px-2 rounded-lg py-[2px] flex items-center justify-between my-2">
+            <Flex align="center">
+              {open ? <ChevronDownIcon className='teal12' /> : <ChevronRightIcon className='teal12' />}
+              <span className="text-teal12 font-light text-[14px] leading-[25px] ml-1">
+                Completed
+              </span>
+            </Flex>
+            <Badge className='text-teal11'>{props.completedQty || 0}</Badge>
+          </div>
+        )}
       </Collapsible.Trigger>
       <Collapsible.Content>
         <animated.div style={styles}>
