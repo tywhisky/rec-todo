@@ -9,7 +9,7 @@ import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { CSSProperties, createRef, useEffect, useRef } from "react";
-import { CheckIcon, ClockIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ClockIcon, ReloadIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
 import dayjs from "dayjs";
 import TaskContextMenu from "./ContextMenu";
@@ -128,36 +128,28 @@ export default function List() {
         </Droppable >
       </DragDropContext >
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
-        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt }) => {
+        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt, completed }) => {
           return (
             <TaskContextMenu key={id} id={id} title={title}>
-              <Card
-                asChild
-                key={id}
-                className="mb-2 select-none"
-                size="1">
-                <Box>
-                  <Flex gap="2" justify="between">
-                    <Box >
-                      <Text className="line-through text-gray-500" as="div" size="2">
-                        {title}
+              <Box className="mb-1 text-gray-500 select-none bg-gray-400 bg-opacity-30 backdrop-blur-sm p-3 rounded-2xl" >
+                <Flex gap="2" justify="between">
+                  <Box >
+                    <Text className="line-through" as="div" size="2">
+                      {title}
+                    </Text>
+                    <Text as="div" size="1" color="gray">
+                      {description}
+                    </Text>
+                    <Flex>
+                      <CheckIcon />
+                      <Text as="div" size="1">
+                        {dayjs(completedAt).format("MM/DD/YYYY HH:mm:ss")}
                       </Text>
-                      <Text className="line-through text-gray-500" as="div" size="1" color="gray">
-                        {description}
-                      </Text>
-                      <Flex>
-                        <CheckIcon color="gray" />
-                        <Text as="div" size="1" color="gray">
-                          {dayjs(completedAt).format("MM/DD/YYYY HH:mm:ss")}
-                        </Text>
-                      </Flex>
-                    </Box>
-                    <IconButton onClick={() => onUndoComplete(id)} color="teal" variant="soft" size="1" >
-                      <CheckIcon width="18" height="18" />
-                    </IconButton>
-                  </Flex>
-                </Box>
-              </Card>
+                    </Flex>
+                  </Box>
+                  <ReloadIcon className="transition duration-300 ease-in-out hover:scale-110" onClick={() => onUndoComplete(id)} />
+                </Flex>
+              </Box>
             </TaskContextMenu>
           );
         })}
