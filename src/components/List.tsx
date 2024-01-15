@@ -68,48 +68,49 @@ export default function List() {
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
                       <TaskContextMenu id={id} title={title}>
-                        <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
-                          <Card
-                            asChild
-                            className="mb-2 select-none"
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              left: "auto !important",
-                              top: "auto !important",
-                            }}
-                            size="1">
-                            <Box>
-                              <Flex gap="2" justify="between">
-                                <Box>
-                                  <LineThroughAnimation key={id} ref={lineThroughRefs.current[index]} completed={completed}>
-                                    <Text as="div" size="2">
-                                      {title}
+                        <div
+                          className="mb-2 select-none"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            left: "auto !important",
+                            top: "auto !important",
+                          }}
+                        >
+                          <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
+                            <Card size="1">
+                              <Box>
+                                <Flex gap="2" justify="between">
+                                  <Box>
+                                    <LineThroughAnimation key={id} ref={lineThroughRefs.current[index]} completed={completed}>
+                                      <Text as="div" size="2">
+                                        {title}
+                                      </Text>
+                                    </LineThroughAnimation>
+                                    <Text as="div" size="1" color="gray">
+                                      {description}
                                     </Text>
-                                  </LineThroughAnimation>
-                                  <Text as="div" size="1" color="gray">
-                                    {description}
-                                  </Text>
-                                  {
-                                    deadline && (
-                                      <Flex align="center">
-                                        <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
-                                        <Text size="1" className={deadlineStyle(deadline)}>
-                                          {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
-                                        </Text>
-                                      </Flex>
-                                    )
-                                  }
-                                </Box>
-                                <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
-                                  <CheckIcon width="18" height="18" />
-                                </IconButton>
-                              </Flex>
-                            </Box>
-                          </Card>
-                        </ItemDropAnimation>
+                                    {
+                                      deadline && (
+                                        <Flex align="center">
+                                          <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
+                                          <Text size="1" className={deadlineStyle(deadline)}>
+                                            {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                          </Text>
+                                        </Flex>
+                                      )
+                                    }
+                                  </Box>
+                                  <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
+                                    <CheckIcon width="18" height="18" />
+                                  </IconButton>
+                                </Flex>
+                              </Box>
+                            </Card>
+                          </ItemDropAnimation>
+                        </div>
                       </TaskContextMenu>
                     )}
                   </Draggable>
@@ -156,6 +157,6 @@ export default function List() {
           );
         })}
       </Collapse>
-    </div>
+    </div >
   );
 }
