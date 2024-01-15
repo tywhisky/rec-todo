@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import TaskContextMenu from "./ContextMenu";
 import LineThroughAnimation from "./animation/LineThroughAnimation";
 import ItemDropAnimation from "./animation/ItemDropAnimation";
+import Checkbox from "./checkbox/index";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -110,9 +111,7 @@ export default function List() {
                                     )
                                   }
                                 </Box>
-                                <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
-                                  <CheckIcon width="18" height="18" />
-                                </IconButton>
+                                <Checkbox onChange={() => onComplete(id, index)} />
                               </Flex>
                             </Box>
                           </ItemDropAnimation>
