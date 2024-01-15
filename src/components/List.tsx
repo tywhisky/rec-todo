@@ -66,10 +66,10 @@ export default function List() {
               {tasks.filter(t => t.completed == false).map(({ id, title, description, deadline, completed }, index) => {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
+                    {(provided, snapshot) => (
                       <TaskContextMenu id={id} title={title}>
                         <div
-                          className="mb-2 select-none"
+                          className="mb-2"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -78,35 +78,39 @@ export default function List() {
                           }}
                         >
                           <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
-                            <Card size="1">
-                              <Box>
-                                <Flex gap="2" justify="between">
-                                  <Box>
-                                    <LineThroughAnimation key={id} ref={lineThroughRefs.current[index]} completed={completed}>
-                                      <Text as="div" size="2">
-                                        {title}
-                                      </Text>
-                                    </LineThroughAnimation>
-                                    <Text as="div" size="1" color="gray">
-                                      {description}
+                            <Box
+                              className="mb-2 select-none rounded border backdrop-blur-sm p-3"
+                              style={{
+                                boxShadow: snapshot.isDragging ? "0px 2px 8px 0px rgba(99, 99, 99, 0.2)" : "",
+
+                              }}
+                            >
+                              <Flex gap="2" justify="between">
+                                <Box>
+                                  <LineThroughAnimation key={id} ref={lineThroughRefs.current[index]} completed={completed}>
+                                    <Text as="div" size="2">
+                                      {title}
                                     </Text>
-                                    {
-                                      deadline && (
-                                        <Flex align="center">
-                                          <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
-                                          <Text size="1" className={deadlineStyle(deadline)}>
-                                            {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
-                                          </Text>
-                                        </Flex>
-                                      )
-                                    }
-                                  </Box>
-                                  <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
-                                    <CheckIcon width="18" height="18" />
-                                  </IconButton>
-                                </Flex>
-                              </Box>
-                            </Card>
+                                  </LineThroughAnimation>
+                                  <Text as="div" size="1" color="gray">
+                                    {description}
+                                  </Text>
+                                  {
+                                    deadline && (
+                                      <Flex align="center">
+                                        <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
+                                        <Text size="1" className={deadlineStyle(deadline)}>
+                                          {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                        </Text>
+                                      </Flex>
+                                    )
+                                  }
+                                </Box>
+                                <IconButton onClick={() => onComplete(id, index)} color="gray" variant="outline" size="1" >
+                                  <CheckIcon width="18" height="18" />
+                                </IconButton>
+                              </Flex>
+                            </Box>
                           </ItemDropAnimation>
                         </div>
                       </TaskContextMenu>
