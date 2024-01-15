@@ -49,9 +49,12 @@ export default function List() {
     return dayjs().isBefore(dayjs(deadline)) && "text-gray-500" || "text-red-500"
   }
 
-  const getItemStyle = (isDragging: boolean): CSSProperties => ({
-    boxShadow: isDragging && "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px" || ""
-  });
+  const getItemStyle = (isDragging: boolean): CSSProperties => {
+    return isDragging && {
+      boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+      background: "rgba(0, 0, 0, 0.15)"
+    } || {}
+  }
 
   useEffect(() => {
     async function fetch() { await taskStore.getTasks() };
@@ -73,7 +76,7 @@ export default function List() {
                     {(provided, snapshot) => (
                       <TaskContextMenu id={id} title={title}>
                         <div
-                          className="mb-2"
+                          className="mb-1"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -83,7 +86,7 @@ export default function List() {
                         >
                           <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
                             <Box
-                              className="mb-2 select-none rounded border backdrop-blur-sm p-3"
+                              className="mb-1 select-none bg-gray-200 bg-opacity-50 backdrop-blur-sm p-3 rounded-2xl"
                               style={getItemStyle(snapshot.isDragging)}
                             >
                               <Flex gap="2" justify="between">
