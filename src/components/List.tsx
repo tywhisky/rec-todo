@@ -5,7 +5,7 @@ import {
   DropResult,
   DroppableProvided
 } from "react-beautiful-dnd";
-import { Box, Card, Flex, IconButton, Text } from '@radix-ui/themes';
+import { Box, Flex, Text } from '@radix-ui/themes';
 import { useTaskStore } from "../store";
 import { Task } from "../types/Task";
 import { CSSProperties, createRef, useEffect, useRef } from "react";
@@ -128,7 +128,7 @@ export default function List() {
         </Droppable >
       </DragDropContext >
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
-        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt, completed }) => {
+        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt }) => {
           return (
             <TaskContextMenu key={id} id={id} title={title}>
               <Box className="mb-1 text-gray-500 select-none bg-gray-400 bg-opacity-30 backdrop-blur-sm p-3 rounded-2xl" >
