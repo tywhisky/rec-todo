@@ -17,7 +17,7 @@ const Checkbox = ({ onChange, checked }: CheckboxProps) => {
   };
 
   return (
-    <label className="checkbox-container bg-gray-200 hover:bg-gray-300 transition duration-300 ease-in-out hover:scale-110">
+    <label className="checkbox-container bg-gray-500 bg-opacity-10 hover:bg-gray-300 transition duration-300 ease-in-out hover:scale-110">
       <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
       <div className="checkmark"></div>
       <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" className="celebrate">
