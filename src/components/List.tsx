@@ -60,16 +60,15 @@ export default function List() {
         <Droppable droppableId="characters">
           {(provided: DroppableProvided) => (
             <div
-              className="tbody-ele"
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
               {tasks.filter(t => t.completed == false).map(({ id, title, description, deadline, completed }, index) => {
                 return (
-                  <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
-                    <Draggable key={id} draggableId={id} index={index}>
-                      {(provided) => (
-                        <TaskContextMenu id={id} title={title}>
+                  <Draggable key={id} draggableId={id} index={index}>
+                    {(provided) => (
+                      <TaskContextMenu id={id} title={title}>
+                        <ItemDropAnimation key={id} ref={itemDropRefs.current[index]} completed={completed}>
                           <Card
                             asChild
                             className="mb-2 select-none"
@@ -110,10 +109,10 @@ export default function List() {
                               </Flex>
                             </Box>
                           </Card>
-                        </TaskContextMenu>
-                      )}
-                    </Draggable>
-                  </ItemDropAnimation>
+                        </ItemDropAnimation>
+                      </TaskContextMenu>
+                    )}
+                  </Draggable>
                 );
               })}
               {provided.placeholder}
