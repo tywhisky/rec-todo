@@ -43,7 +43,6 @@ export default function AddTask() {
               value={deadline}
               onChange={(newValue: Dayjs) => setDeadline(newValue)}
             />
-            {/* {deadline && (<Cross1Icon height="12" width="12" className="ml-2 mr-1 cursor-pointer" onClick={() => setDeadline(null)} />)} */}
           </Flex>
         </Flex>
         <Box className="bg-teal2 rounded-full active:bg-teal3 hover:bg-teal3">
