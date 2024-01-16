@@ -17,12 +17,14 @@ import LineThroughAnimation from "./animation/LineThroughAnimation";
 import ItemDropAnimation from "./animation/ItemDropAnimation";
 import Checkbox from "./checkbox/index";
 import DeleteTaskDialog from "./DeleteTaskDialog";
+import EditTaskDialog from "./EditTaskDialog";
 
 export default function List() {
   const taskStore: any = useTaskStore()
   const tasks: Task[] = taskStore.tasks;
   const [isCompleting, setIsCompleting] = useState(false);
   const [deleteToggle, setDeleteToggle] = useState(false);
+  const [editToggle, setEditToggle] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>();
 
   const lineThroughRefs = useRef<any>([]);
@@ -57,10 +59,21 @@ export default function List() {
     setDeleteToggle(true);
   }
 
+  const handleOnEdit = (task: Task) => {
+    setSelectedTask(task);
+    setEditToggle(true);
+  }
+
   const deleteTask = () => {
     if (selectedTask) {
       taskStore.deleteTask(selectedTask.id)
       setDeleteToggle(false)
+    }
+  }
+  const editTask = () => {
+    if (selectedTask) {
+      taskStore.updateTask(selectedTask.id, selectedTask)
+      setEditToggle(false)
     }
   }
 
@@ -93,7 +106,7 @@ export default function List() {
                 return (
                   <Draggable key={task.id} draggableId={task.id} index={index}>
                     {(provided, snapshot) => (
-                      <TaskContextMenu {...task} onDelete={() => handleOnDelete(task)}>
+                      <TaskContextMenu {...task} onDelete={() => handleOnDelete(task)} onEdit={() => handleOnEdit(task)}>
                         <div
                           className="mb-1"
                           ref={provided.innerRef}
@@ -151,7 +164,7 @@ export default function List() {
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
         {tasks.filter(t => t.completed == true).map((task) => {
           return (
-            <TaskContextMenu key={task.id} {...task} onDelete={() => handleOnDelete(task)}>
+            <TaskContextMenu key={task.id} {...task} onDelete={() => handleOnDelete(task)} onEdit={() => handleOnEdit(task)}>
               <Box className="mb-1 text-gray-500 select-none bg-gray-400 bg-opacity-30 backdrop-blur-sm p-3 rounded-2xl" >
                 <Flex gap="2" justify="between">
                   <Box >
@@ -180,6 +193,16 @@ export default function List() {
         onClose={() => setDeleteToggle(false)}
         onConfirm={() => deleteTask()}
         open={deleteToggle} />
+      <EditTaskDialog
+        title={selectedTask && selectedTask.title || ""}
+        onTitleChange={(e) => setSelectedTask({ ...selectedTask, title: e.target.value } as Task)}
+        description={selectedTask && selectedTask.description || ""}
+        onDescriptionChange={(e) => setSelectedTask({ ...selectedTask, description: e.target.value } as Task)}
+        deadline={selectedTask && selectedTask.deadline || undefined}
+        onDeadlineChange={(newValue) => setSelectedTask({ ...selectedTask, deadline: newValue } as Task)}
+        onClose={() => setEditToggle(false)}
+        onConfirm={() => editTask()}
+        open={editToggle} />
     </div >
   );
 }

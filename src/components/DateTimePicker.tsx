@@ -51,6 +51,7 @@ export default function DateTimePicker(props: any) {
   return (
     <MobileDateTimePicker
       minDateTime={dayjs()}
+      onChange={props.onChange}
       slots={{ field: ButtonField, ...props.slots }}
       slotProps={{ field: { setOpen } as any, actionBar: { actions: ['clear', 'accept'] } }}
       {...props}
