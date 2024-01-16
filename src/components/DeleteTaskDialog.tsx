@@ -1,7 +1,7 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
 import { useTaskStore } from "../store"
 
-export default function Dialog(props: any) {
+export default function DeleteTaskDialog(props: any) {
   const taskStore: any = useTaskStore()
   const onDelete = (id: string) => {
     taskStore.deleteTask(id)

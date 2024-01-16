@@ -1,25 +1,30 @@
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { ContextMenu, Text } from '@radix-ui/themes';
-import Dialog from './Dialog';
+import DeleteTaskDialog from './DeleteTaskDialog';
 
-export default function TaskContextMenu(props: any) {
+interface TaskContextMenuProps {
+  children: React.ReactNode
+  title: string
+  id: string
+}
+export default function TaskContextMenu(props: TaskContextMenuProps) {
   return (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
         {props.children}
       </ContextMenu.Trigger>
       <ContextMenu.Content color="teal">
-        <ContextMenu.Item>
+        <ContextMenu.Item onSelect={(e) => e.preventDefault()}>
           <Text>Edit</Text>
           <Pencil2Icon className="ml-2" />
         </ContextMenu.Item>
         <ContextMenu.Separator />
-        <Dialog id={props.id} title={props.title}>
+        <DeleteTaskDialog id={props.id} title={props.title}>
           <ContextMenu.Item onSelect={(e) => e.preventDefault()}>
             <Text>Delete</Text>
             <TrashIcon className="ml-2" />
           </ContextMenu.Item>
-        </Dialog >
+        </DeleteTaskDialog >
       </ContextMenu.Content>
     </ContextMenu.Root>
   )
