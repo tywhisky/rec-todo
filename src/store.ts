@@ -85,6 +85,18 @@ export const useTaskStore = create((set, get: any) => ({
     }));
     updateTasks(newTasks);
   },
+  updateTask: (id: string, newTask: UpdateTaskInput) => {
+    const tasks: Task[] = get().tasks;
+    const current = new Date();
+    const newTasks = updateTask(tasks, id, { title: newTask.title, description: newTask.description, deadline: newTask.deadline, updatedAt: current });
+    set((state: any) => ({
+      tasks:
+        state.tasks.map((task: Task) =>
+          task.id === id ? { ...task, title: newTask.title, description: newTask.description, deadline: newTask.deadline, updatedAt: current } : task
+        )
+    }));
+    updateTasks(newTasks);
+  },
   reorderTasks: (source_idx: number, destination_idx: number) => {
     const tasks: Task[] = get().tasks;
 
