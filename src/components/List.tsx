@@ -164,7 +164,7 @@ export default function List() {
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
         {tasks.filter(t => t.completed == true).map((task) => {
           return (
-            <TaskContextMenu key={task.id} {...task} onDelete={() => handleOnDelete(task)} onEdit={() => handleOnEdit(task)}>
+            <TaskContextMenu key={task.id} {...task} onDelete={() => handleOnDelete(task)}>
               <Box className="mb-1 text-gray-500 select-none bg-gray-400 bg-opacity-30 backdrop-blur-sm p-3 rounded-2xl" >
                 <Flex gap="2" justify="between">
                   <Box >
