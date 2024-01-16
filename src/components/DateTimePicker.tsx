@@ -9,7 +9,6 @@ import {
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { Flex, Text } from '@radix-ui/themes';
 import { CalendarIcon, } from '@radix-ui/react-icons';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 interface ButtonFieldProps
   extends UseDateFieldProps<Dayjs>,
@@ -49,25 +48,15 @@ function ButtonField(props: ButtonFieldProps) {
 export default function DateTimePicker(props: any) {
   const [open, setOpen] = React.useState(false);
 
-  const theme = createTheme(
-    {
-      palette: {
-        primary: { main: "#12A594" },
-      },
-    },
-  );
-
   return (
-    <ThemeProvider theme={theme}>
-      <MobileDateTimePicker
-        minDateTime={dayjs()}
-        slots={{ field: ButtonField, ...props.slots }}
-        slotProps={{ field: { setOpen } as any, actionBar: { actions: ['clear', 'accept'] } }}
-        {...props}
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-      />
-    </ThemeProvider>
+    <MobileDateTimePicker
+      minDateTime={dayjs()}
+      slots={{ field: ButtonField, ...props.slots }}
+      slotProps={{ field: { setOpen } as any, actionBar: { actions: ['clear', 'accept'] } }}
+      {...props}
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+    />
   );
 }

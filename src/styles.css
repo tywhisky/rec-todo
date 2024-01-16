@@ -27,6 +27,6 @@
   height: 30px;
 }
 
-html::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
 }

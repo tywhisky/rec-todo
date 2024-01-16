@@ -78,7 +78,7 @@ export default function List() {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided, snapshot) => (
-                      <TaskContextMenu id={id} title={title}>
+                      <TaskContextMenu id={id} title={title} deadline={deadline} description={description}>
                         <div
                           className="mb-1"
                           ref={provided.innerRef}
@@ -111,7 +111,7 @@ export default function List() {
                                       <Flex align="center">
                                         <ClockIcon className={`mr-1 ${deadlineStyle(deadline)}`} />
                                         <Text size="1" className={deadlineStyle(deadline)}>
-                                          {dayjs(deadline).format('MM/DD/YYYY HH:mm:ss')}
+                                          {dayjs(deadline).format('MM/DD/YYYY hh:mm:ss A')}
                                         </Text>
                                       </Flex>
                                     )
@@ -134,9 +134,9 @@ export default function List() {
         </Droppable >
       </DragDropContext >
       <Collapse completedQty={tasks.filter(t => t.completed).length}>
-        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt }) => {
+        {tasks.filter(t => t.completed == true).map(({ id, title, description, completedAt, deadline }) => {
           return (
-            <TaskContextMenu key={id} id={id} title={title}>
+            <TaskContextMenu key={id} id={id} title={title} deadline={deadline} description={description}>
               <Box className="mb-1 text-gray-500 select-none bg-gray-400 bg-opacity-30 backdrop-blur-sm p-3 rounded-2xl" >
                 <Flex gap="2" justify="between">
                   <Box >
@@ -149,7 +149,7 @@ export default function List() {
                     <Flex>
                       <CheckIcon />
                       <Text as="div" size="1">
-                        {dayjs(completedAt).format("MM/DD/YYYY HH:mm:ss")}
+                        {dayjs(completedAt).format("MM/DD/YYYY hh:mm:ss A")}
                       </Text>
                     </Flex>
                   </Box>
