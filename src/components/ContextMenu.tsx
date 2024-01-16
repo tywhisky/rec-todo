@@ -1,14 +1,11 @@
 import { Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { ContextMenu, Text } from '@radix-ui/themes';
-import DeleteTaskDialog from './DeleteTaskDialog';
 import EditTaskDialog from './EditTaskDialog';
 
 interface TaskContextMenuProps {
   children: React.ReactNode
-  title: string
-  description?: string
-  deadline?: Date
   id: string
+  onDelete: () => void
 }
 export default function TaskContextMenu(props: TaskContextMenuProps) {
   return (
@@ -24,13 +21,11 @@ export default function TaskContextMenu(props: TaskContextMenuProps) {
           </ContextMenu.Item>
         </EditTaskDialog>
         <ContextMenu.Separator />
-        <DeleteTaskDialog id={props.id} title={props.title}>
-          <ContextMenu.Item onSelect={(e) => e.preventDefault()}>
-            <Text>Delete</Text>
-            <TrashIcon className="ml-2" />
-          </ContextMenu.Item>
-        </DeleteTaskDialog >
+        <ContextMenu.Item onSelect={() => props.onDelete()}>
+          <Text>Delete</Text>
+          <TrashIcon className="ml-2" />
+        </ContextMenu.Item>
       </ContextMenu.Content>
-    </ContextMenu.Root>
+    </ContextMenu.Root >
   )
 }
