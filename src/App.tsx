@@ -5,11 +5,10 @@ import List from "./components/List";
 import { ThemeProvider, createTheme } from '@mui/material';
 import { useTaskStore } from './store';
 import { Task } from './types/Task';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 function App() {
   const tasks: Task[] = useTaskStore((state: any) => state.tasks)
-  const today = dayjs().startOf("day");
   const hasTaskDays = tasks.filter(t => t.completed == false && t.deadline != null).map(t => dayjs(t.deadline).format("MM/DD/YYYY"))
 
   const theme = createTheme({
