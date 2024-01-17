@@ -11,13 +11,14 @@ import { Task } from "../types/Task";
 import { CSSProperties, createRef, useEffect, useRef, useState } from "react";
 import { CheckIcon, ClockIcon, ReloadIcon } from "@radix-ui/react-icons";
 import Collapse from "./Collapse";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import TaskContextMenu from "./ContextMenu";
 import LineThroughAnimation from "./animation/LineThroughAnimation";
 import ItemDropAnimation from "./animation/ItemDropAnimation";
 import Checkbox from "./checkbox/index";
 import DeleteTaskDialog from "./DeleteTaskDialog";
 import EditTaskDialog from "./EditTaskDialog";
+import DateFilter from "./DateFilter";
 
 export default function List() {
   const taskStore: any = useTaskStore()
@@ -26,6 +27,7 @@ export default function List() {
   const [deleteToggle, setDeleteToggle] = useState(false);
   const [editToggle, setEditToggle] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>();
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
   const lineThroughRefs = useRef<any>([]);
   lineThroughRefs.current = tasks.map((_, i) => lineThroughRefs.current[i] ?? createRef());
@@ -95,6 +97,12 @@ export default function List() {
 
   return (
     <div>
+      <DateFilter
+        label={selectedDate && dayjs(selectedDate).format("MM/DD/YYYY")}
+        value={selectedDate}
+        onChange={(newDate: Dayjs) => setSelectedDate(newDate)}
+        onClear={() => setSelectedDate(null)}
+      />
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="characters">
           {(provided: DroppableProvided) => (
@@ -102,9 +110,11 @@ export default function List() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tasks.filter(t => t.completed == false).map((task, index) => {
+              {tasks.filter(t => (t.completed == false)
+                && (selectedDate ? dayjs(t.deadline).isSame(selectedDate, 'day') : true)
+              ).map((task, index) => {
                 return (
-                  <Draggable key={task.id} draggableId={task.id} index={index}>
+                  <Draggable isDragDisabled={selectedDate != null} key={task.id} draggableId={task.id} index={index}>
                     {(provided, snapshot) => (
                       <TaskContextMenu {...task} onDelete={() => handleOnDelete(task)} onEdit={() => handleOnEdit(task)}>
                         <div

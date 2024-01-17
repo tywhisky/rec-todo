@@ -6,7 +6,7 @@ export interface Task {
   title: string;
   description?: string;
   completed?: boolean;
-  deadline?: Date;
+  deadline: Date | null;
   insertedAt: Date;
   updatedAt: Date;
   completedAt?: Date;
@@ -15,7 +15,7 @@ export interface Task {
 interface NewTaskInput {
   title: string;
   description?: string;
-  deadline?: Date;
+  deadline: Date | null;
 }
 
 export interface UpdateTaskInput {
@@ -23,7 +23,7 @@ export interface UpdateTaskInput {
   title?: string;
   description?: string;
   completed?: boolean;
-  deadline?: Date;
+  deadline: Date | null;
   insertedAt?: Date;
   updatedAt?: Date;
   completedAt?: Date;
@@ -35,7 +35,7 @@ export class NewTask implements Task {
   title: string;
   description?: string;
   completed?: boolean;
-  deadline?: Date;
+  deadline: Date | null;
   insertedAt: Date;
   updatedAt: Date;
   completedAt?: Date;
@@ -48,7 +48,7 @@ export class NewTask implements Task {
     this.title = data.title;
     this.description = data.description;
     this.completed = false;
-    this.deadline = data.deadline;
+    this.deadline = data.deadline && data.deadline || null;
     this.insertedAt = currentDate;
     this.updatedAt = currentDate;
   }

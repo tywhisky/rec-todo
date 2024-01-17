@@ -16,7 +16,7 @@ export default function AddTask() {
 
   const onAddTask = () => {
     if (title == "") return
-    const new_task = new NewTask({ title: title, description: description, deadline: deadline?.toDate() });
+    const new_task = new NewTask({ title: title, description: description, deadline: deadline && deadline.toDate() || null });
     taskStore.addTask(new_task);
     setTitle("");
     setDescription("");
