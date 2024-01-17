@@ -3,15 +3,46 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddTask from "./components/AddTask";
 import List from "./components/List";
 import { ThemeProvider, createTheme } from '@mui/material';
+import { useTaskStore } from './store';
+import { Task } from './types/Task';
+import dayjs, { Dayjs } from 'dayjs';
 
 function App() {
-  const theme = createTheme(
-    {
-      palette: {
-        primary: { main: "#12A594" },
-      },
+  const tasks: Task[] = useTaskStore((state: any) => state.tasks)
+  const today = dayjs().startOf("day");
+  const hasTaskDays = tasks.filter(t => t.completed == false && t.deadline != null).map(t => dayjs(t.deadline).format("MM/DD/YYYY"))
+
+  const theme = createTheme({
+    palette: {
+      primary: { main: "#12A594" },
     },
-  );
+    components: {
+      MuiPickersDay: {
+        styleOverrides: {
+          root: (props: any) => {
+            const day = dayjs(props.ownerState.day).format("MM/DD/YYYY")
+            if (hasTaskDays.includes(day)) {
+              return {
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  bottom: '4px',
+                  left: '16px',
+                  width: '5px',
+                  height: '5px',
+                  backgroundColor: '#86EAD4',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  marginRight: '5px',
+                }
+              };
+            }
+            return {}
+          }
+        }
+      }
+    } as any
+  });
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
