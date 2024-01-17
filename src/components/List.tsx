@@ -43,11 +43,11 @@ export default function List() {
     lineThroughRefs.current[index].current.showAnimation();
     setTimeout(() => {
       itemDropRefs.current[index].current.showAnimation();
-    }, 300)
+    }, 400)
     setTimeout(() => {
       taskStore.completeTask(id)
       setIsCompleting(false)
-    }, 800)
+    }, 900)
   }
 
   const onUndoComplete = (id: string) => {
