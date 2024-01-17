@@ -6,10 +6,14 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { useTaskStore } from './store';
 import { Task } from './types/Task';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 
 function App() {
-  const tasks: Task[] = useTaskStore((state: any) => state.tasks)
-  const hasTaskDays = tasks.filter(t => t.completed == false && t.deadline != null).map(t => dayjs(t.deadline).format("MM/DD/YYYY"))
+  const tasks: Task[] = useTaskStore((state: any) => state.tasks);
+  const hasTaskDays = tasks.filter(t => t.completed == false && t.deadline != null).map(t => dayjs(t.deadline).format("MM/DD/YYYY"));
+  const [refresh, setRefresh] = useState<boolean>(false);
+
+  useEffect(() => { }, [refresh])
 
   const theme = createTheme({
     palette: {
@@ -48,7 +52,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="p-4 relative h-full">
           <List />
-          <AddTask />
+          <AddTask refresh={() => setRefresh(!refresh)} />
         </div>
       </ThemeProvider>
     </LocalizationProvider>

@@ -7,7 +7,7 @@ import { Dayjs } from 'dayjs';
 import DateTimePicker from "./DateTimePicker";
 import { IconButton } from "@mui/material";
 
-export default function AddTask() {
+export default function AddTask({ refresh }: any) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState<Dayjs | null>(null);
@@ -21,6 +21,7 @@ export default function AddTask() {
     setTitle("");
     setDescription("");
     setDeadline(null);
+    refresh();
   }
   const handleKeyEnter = (event: { key: string; }) => {
     if (title == "" || event.key !== 'Enter') return
